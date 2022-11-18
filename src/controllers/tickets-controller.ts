@@ -2,7 +2,6 @@ import { AuthenticatedRequest } from "@/middlewares";
 import { Response } from "express";
 import ticketsService from "@/services/tickets-service";
 import httpStatus from "http-status";
-import enrollmentsService from "@/services/enrollments-service";
 
 export async function getTicketsType(req: AuthenticatedRequest, res: Response) {
   try {
@@ -29,5 +28,16 @@ export async function getTicketsByUser(req: AuthenticatedRequest, res: Response)
 }
 
 export async function postNewTicket(req: AuthenticatedRequest, res: Response) {
-  res.send("POST: /tickets");
+  const { userId } = req;
+  const ticketTypeId: number = req.body.ticketTypeId;
+
+  try {
+    const createdTicket = await ticketsService.createUserTicket(userId, ticketTypeId);
+
+    return res.status(httpStatus.CREATED).send(createdTicket);
+  } catch (error) {
+    if (error.name === "NotFoundError") {
+      return res.sendStatus(httpStatus.NOT_FOUND);
+    }
+  }
 }
