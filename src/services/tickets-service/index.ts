@@ -14,7 +14,7 @@ async function getUserTickets(userId: number) {
   
   const userTickets = await ticketsRepository.findUserTickets(userEnrollment.id);
 
-  if (userTickets.length === 0) throw notFoundError();
+  if (!userTickets) throw notFoundError();
 
   return userTickets;
 }

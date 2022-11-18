@@ -17,9 +17,9 @@ export async function getTicketsByUser(req: AuthenticatedRequest, res: Response)
   const { userId } = req;
 
   try {
-    const userTickets = await ticketsService.getUserTickets(userId);
+    const userTicket = await ticketsService.getUserTickets(userId);
 
-    return res.status(httpStatus.OK).send(userTickets[0]); //Verificar se dado único ou array
+    return res.status(httpStatus.OK).send(userTicket);
   } catch (error) {
     if (error.name === "NotFoundError") {
       return res.sendStatus(httpStatus.NOT_FOUND);
