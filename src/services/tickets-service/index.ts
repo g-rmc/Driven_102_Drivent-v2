@@ -7,12 +7,20 @@ async function getAllTicketsType() {
   return ticketTypes;
 }
 
-async function getUserTickets(userId: number) {
+async function validateEnrollment(userId: number) {
   const userEnrollment = await enrollmentRepository.findWithAddressByUserId(userId);
 
-  if (!userEnrollment) throw notFoundError();
+  if (!userEnrollment) return null;
+
+  return userEnrollment.id;
+}
+
+async function getUserTickets(userId: number) {
+  const enrollmentId = await validateEnrollment(userId);
+
+  if (!enrollmentId) throw notFoundError();
   
-  const userTickets = await ticketsRepository.findUserTickets(userEnrollment.id);
+  const userTickets = await ticketsRepository.findUserTickets(enrollmentId);
 
   if (!userTickets) throw notFoundError();
 
@@ -20,11 +28,11 @@ async function getUserTickets(userId: number) {
 }
 
 async function createUserTicket(userId: number, ticketTypeId: number) {
-  const userEnrollment = await enrollmentRepository.findWithAddressByUserId(userId);
+  const enrollmentId = await validateEnrollment(userId);
 
-  if (!userEnrollment) throw notFoundError();
+  if (!enrollmentId) throw notFoundError();
 
-  const createdTicket = await ticketsRepository.insertNewTicket(userEnrollment.id, ticketTypeId);
+  const createdTicket = await ticketsRepository.insertNewTicket(enrollmentId, ticketTypeId);
 
   return createdTicket;
 }
