@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authenticateToken, validateBody } from "@/middlewares";
+import { authenticateToken } from "@/middlewares"; //validateBody
 import { getPaymentsById, postNewPayment } from "@/controllers";
 //import { createPaymentSchema } from "@/schemas";
 
