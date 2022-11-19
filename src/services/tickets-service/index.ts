@@ -7,7 +7,7 @@ async function getAllTicketsType() {
   return ticketTypes;
 }
 
-async function validateEnrollment(userId: number) {
+export async function validateEnrollment(userId: number) {
   const userEnrollment = await enrollmentRepository.findWithAddressByUserId(userId);
 
   if (!userEnrollment) return null;
