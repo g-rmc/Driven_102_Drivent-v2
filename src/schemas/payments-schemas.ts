@@ -7,7 +7,7 @@ export const paymentDataSchema = Joi.object<{ticketId: number, cardData: CardDat
     issuer: Joi.string().required(),
     number: Joi.number().required(),
     name: Joi.string().required(),
-    expirationDate: Joi.date().required(),
+    expirationDate: Joi.string().required(), //deve ser data
     cvv: Joi.number().required(),
   }).required(),
 });
